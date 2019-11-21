@@ -36,12 +36,14 @@ namespace InfoTech.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=RADU\\SQLEXPRESS01;Database=IT;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=RADU\\SQLEXPRESS01;Database=PIT;Trusted_Connection=True;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.HasAnnotation("ProductVersion", "2.2.4-servicing-10062");
 
             modelBuilder.Entity<Brand>(entity =>

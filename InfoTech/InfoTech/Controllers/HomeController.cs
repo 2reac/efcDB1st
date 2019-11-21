@@ -17,7 +17,6 @@ namespace InfoTech.Controllers
             return View();
         }
 
-        [Authorize(Roles = "User")]
         public IActionResult Privacy()
         {
             return View();

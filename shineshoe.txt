@@ -1,0 +1,144 @@
+SHine
+SHoes
+
+create table "general_address" (
+address_id int primary key identity (1,1),
+country varchar(20) not null,
+region varchar(20) not null,
+city varchar(40) not null,
+street varchar(40) not null,
+number int not null,
+zip_code char(7)
+);
+
+go
+
+create table "delivery_address" (
+delivery_address_id int primary key identity (1,1),
+first_name varchar(50) not null,
+last_name varchar(50) not null,
+phone varchar(15) null,
+email varchar(50) not null,
+address_id int not null foreign key references "general_address"(address_id)
+);
+
+go
+
+create table "brand" (
+brand_id int primary key identity (1,1),
+brand_name varchar(30) not null,
+brand_year int 
+);
+
+go
+
+create table "discount" (
+discount_id int identity (1,1) unique,
+discount_code varchar(20) primary key,
+discount_percentage int not null check (discount_percentage > 0 and discount_percentage < 100)
+);
+
+go
+
+create table "payment" (
+payment_id int primary key identity (1,1),
+payment_type char(4) check(payment_type in ('Card','Cash')) default ('Card'),
+payment_value numeric(12,2)
+);
+
+go
+
+create table "category" (
+category_id int primary key identity (1,1),
+category_name varchar(50) not null,
+category_availability bit
+);
+
+go
+
+create table "product" (
+product_id int primary key identity (1,1),
+product_name varchar(50) not null,
+brand_id int not null foreign key references "brand"(brand_id), 
+description varchar(150) not null,
+product_price numeric(9,2),
+product_image nvarchar(max),
+origin varchar(20),
+in_stock bit,
+category_id int not null foreign key references "category"(category_id), 
+product_discount_percent int not null check (product_discount_percent > 0 and product_discount_percent < 100)
+);
+
+go
+
+create table "store" (
+store_id int primary key identity (1,1),
+store_name varchar(50) not null,
+phone varchar(15) null,
+email varchar(50) not null,
+country varchar(20) not null,
+region varchar(20) not null,
+city varchar(40) not null,
+street varchar(40) not null,
+zip_code char(7)
+);
+
+go
+
+create table "stock" (
+product_id int not null foreign key references "product"(product_id),
+store_id int not null foreign key references "store"(store_id),
+quantity int,
+
+primary key(product_id, store_id)
+);
+
+go
+
+create table "product_category" (
+product_id int not null foreign key references "product"(product_id),
+category_id int not null foreign key references "category"(category_id),
+
+primary key(product_id, category_id)
+);
+
+go
+
+create table "customer" (
+customer_id int primary key identity(1,1),
+first_name varchar(50) not null,
+last_name varchar(50) not null,
+phone varchar(15) null,
+email varchar(50) not null,
+password_hash binary(64) not null,
+address_id int foreign key references "general_address"(address_id)
+);
+
+go
+
+create table "order" (
+order_id int unique identity(10001,1),
+customer_id int not null foreign key references "customer"(customer_id),
+order_date date,
+delivery_address_id int not null foreign key references "delivery_address"(delivery_address_id),
+store_id int not null foreign key references "store"(store_id),
+discount_code varchar(20) foreign key references "discount"(discount_code),
+payment_id int not null foreign key references "payment"(payment_id),
+order_status char(10) check(order_status in ('Cart','Pending','Placed')),
+
+primary key(order_id, customer_id)
+);
+
+go
+
+create table "order_product" (
+order_id int not null foreign key references "order"(order_id),
+product_id int not null foreign key references "product"(product_id),
+quantity int not null,
+price numeric(9,2)
+
+primary key(order_id, product_id)
+);
+
+Scaffold-DbContext "Server=RADU\SQLEXPRESS01;Database=InfoTech;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+ -Force

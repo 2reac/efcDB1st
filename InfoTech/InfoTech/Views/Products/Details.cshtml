@@ -5,69 +5,70 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+@*<h1>Details</h1>*@
+<h1>@Html.DisplayFor(model => model.ProductName)</h1>
 
 <div>
-    <h4>Product</h4>
+    <h4>Product Details</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProductName)
+        <dd class="col-sm-6">
+            @{
+                var imgStrng = @Model.ProductImage;
+                var imgSrc = String.Format("data:image;base64,{0}", imgStrng);
+            }
+            <img src="@imgSrc" width="500" height=auto />
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductPrice)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProductPrice)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductImage)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProductImage)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Origin)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Origin)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.InStock)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.InStock)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductDiscountPercent)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProductDiscountPercent)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Brand)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Brand.BrandName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Category)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Category.CategoryName)
-        </dd>
+        <div class="col-sm-6">
+            <dt class="col-sm-12">
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+            <dd class="col-sm-12">
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+            <dt class="col-sm-12">
+                @Html.DisplayNameFor(model => model.ProductPrice)
+            </dt>
+            <dd class="col-sm-12">
+                @Html.DisplayFor(model => model.ProductPrice)
+            </dd>
+            <dt class="col-sm-12">
+                @Html.DisplayNameFor(model => model.Origin)
+            </dt>
+            <dd class="col-sm-12">
+                @Html.DisplayFor(model => model.Origin)
+            </dd>
+            <dt class="col-sm-12">
+                @Html.DisplayNameFor(model => model.InStock)
+            </dt>
+            <dd class="col-sm-12">
+                @Html.DisplayFor(model => model.InStock)
+            </dd>
+            <dt class="col-sm-12">
+                @Html.DisplayNameFor(model => model.ProductDiscountPercent)
+            </dt>
+            <dd class="col-sm-12">
+                @Html.DisplayFor(model => model.ProductDiscountPercent)
+            </dd>
+            <dt class="col-sm-12">
+                @Html.DisplayNameFor(model => model.Brand)
+            </dt>
+            <dd class="col-sm-12">
+                @Html.DisplayFor(model => model.Brand.BrandName)
+            </dd>
+            <dt class="col-sm-12">
+                @Html.DisplayNameFor(model => model.Category)
+            </dt>
+            <dd class="col-sm-12">
+                @Html.DisplayFor(model => model.Category.CategoryName)
+            </dd>
+        </div>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ProductId">Edit</a> |
+    @if (User.IsInRole("Admin"))
+    {
+    <a asp-action="Edit" asp-route-id="@Model.ProductId">Edit |</a>
+    }
     <a asp-action="Index">Back to List</a>
 </div>

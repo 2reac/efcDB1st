@@ -9,7 +9,7 @@
 <h1>@Html.DisplayFor(model => model.ProductName)</h1>
 
 <div>
-    <h4>Product Details</h4>
+    <h4>Details</h4>
     <hr />
     <dl class="row">
         <dd class="col-sm-6">
@@ -27,7 +27,7 @@
                 @Html.DisplayFor(model => model.Description)
             </dd>
             <dt class="col-sm-12">
-                @Html.DisplayNameFor(model => model.ProductPrice)
+                Price
             </dt>
             <dd class="col-sm-12">
                 @Html.DisplayFor(model => model.ProductPrice)
@@ -39,19 +39,19 @@
                 @Html.DisplayFor(model => model.Origin)
             </dd>
             <dt class="col-sm-12">
-                @Html.DisplayNameFor(model => model.InStock)
+                In Stock
             </dt>
             <dd class="col-sm-12">
                 @Html.DisplayFor(model => model.InStock)
             </dd>
             <dt class="col-sm-12">
-                @Html.DisplayNameFor(model => model.ProductDiscountPercent)
+                Discount Percent
             </dt>
             <dd class="col-sm-12">
                 @Html.DisplayFor(model => model.ProductDiscountPercent)
             </dd>
             <dt class="col-sm-12">
-                @Html.DisplayNameFor(model => model.Brand)
+                Brand
             </dt>
             <dd class="col-sm-12">
                 @Html.DisplayFor(model => model.Brand.BrandName)

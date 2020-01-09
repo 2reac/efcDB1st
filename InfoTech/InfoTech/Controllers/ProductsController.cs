@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using InfoTech.Models;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace InfoTech.Controllers
 {
@@ -58,16 +60,24 @@ namespace InfoTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductId,ProductName,BrandId,Description,ProductPrice,ProductImage,Origin,InStock,CategoryId,ProductDiscountPercent")] Product product)
+        public async Task<IActionResult> Create([Bind("ProductId,ProductName,BrandId,Description,ProductPrice,ProductImage,Origin,InStock,CategoryId,ProductDiscountPercent")] Product product, IFormFile ProductImage)
         {
             if (ModelState.IsValid)
             {
+                if(ProductImage.Length > 0)
+                {
+                    var ms = new MemoryStream();
+                    ProductImage.CopyTo(ms);
+                    var bytes = ms.ToArray();
+                    product.ProductImage = Convert.ToBase64String(bytes);
+                }
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["BrandId"] = new SelectList(_context.Brand, "BrandId", "BrandName", product.BrandId);
             ViewData["CategoryId"] = new SelectList(_context.Category, "CategoryId", "CategoryName", product.CategoryId);
+
             return View(product);
         }
 
@@ -94,15 +104,23 @@ namespace InfoTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductId,ProductName,BrandId,Description,ProductPrice,ProductImage,Origin,InStock,CategoryId,ProductDiscountPercent")] Product product)
+        public async Task<IActionResult> Edit(int ProductId, [Bind("ProductId,ProductName,BrandId,Description,ProductPrice,ProductImage,Origin,InStock,CategoryId,ProductDiscountPercent")] Product product, IFormFile ProductImage)
         {
-            if (id != product.ProductId)
+            if (ProductId != product.ProductId)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                if (ProductImage.Length > 0)
+                {
+                    var ms = new MemoryStream();
+                    ProductImage.CopyTo(ms);
+                    var bytes = ms.ToArray();
+                    product.ProductImage = Convert.ToBase64String(bytes);
+                }
+
                 try
                 {
                     _context.Update(product);
@@ -149,9 +167,9 @@ namespace InfoTech.Controllers
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int ProductId)
         {
-            var product = await _context.Product.FindAsync(id);
+            var product = await _context.Product.FindAsync(ProductId);
             _context.Product.Remove(product);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

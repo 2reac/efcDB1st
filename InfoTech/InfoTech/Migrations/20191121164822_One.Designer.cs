@@ -80,13 +80,11 @@ namespace InfoTech.Migrations
                         .IsUnicode(false);
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnName("first_name")
                         .HasMaxLength(50)
                         .IsUnicode(false);
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnName("last_name")
                         .HasMaxLength(50)
                         .IsUnicode(false);

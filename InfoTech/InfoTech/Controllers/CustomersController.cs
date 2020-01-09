@@ -69,14 +69,14 @@ namespace InfoTech.Controllers
         }
 
         // GET: Customers/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string email)
         {
-            if (id == null)
+            if (email == null)
             {
                 return NotFound();
             }
 
-            var customer = await _context.Customer.FindAsync(id);
+            var customer = GetByName(email);
             if (customer == null)
             {
                 return NotFound();
@@ -85,14 +85,25 @@ namespace InfoTech.Controllers
             return View(customer);
         }
 
+        public Customer GetByName(string name) //get a customer by name
+        {
+            var nameParameter = new System.Data.SqlClient.SqlParameter("@name", name);
+
+            using (var context = new ITContext())
+            {
+                var c = _context.Customer.FromSql("exec [dbo].[customer_by_email] @name", nameParameter).FirstOrDefault();
+                return c;
+            }
+        }
+
         // POST: Customers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CustomerId,FirstName,LastName,Phone,Email,AddressId")] Customer customer)
+        public async Task<IActionResult> Edit(int CustomerId, [Bind("CustomerId,FirstName,LastName,Phone,Email,AddressId")] Customer customer)
         {
-            if (id != customer.CustomerId)
+            if (CustomerId != customer.CustomerId)
             {
                 return NotFound();
             }
@@ -115,7 +126,7 @@ namespace InfoTech.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Products");
             }
             ViewData["AddressId"] = new SelectList(_context.GeneralAddress, "AddressId", "City", customer.AddressId);
             return View(customer);

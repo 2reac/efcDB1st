@@ -102,11 +102,6 @@ namespace InfoTech.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.PasswordHash)
-                    .IsRequired()
-                    .HasColumnName("password_hash")
-                    .HasMaxLength(64);
-
                 entity.Property(e => e.Phone)
                     .HasColumnName("phone")
                     .HasMaxLength(15)

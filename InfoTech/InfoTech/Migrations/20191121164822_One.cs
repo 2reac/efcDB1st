@@ -32,7 +32,6 @@ namespace InfoTech.Migrations
                     Email = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(nullable: false),
-                    PasswordHash = table.Column<string>(nullable: true),
                     SecurityStamp = table.Column<string>(nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
@@ -290,7 +289,6 @@ namespace InfoTech.Migrations
                     last_name = table.Column<string>(unicode: false, maxLength: 50, nullable: false),
                     phone = table.Column<string>(unicode: false, maxLength: 15, nullable: true),
                     email = table.Column<string>(unicode: false, maxLength: 50, nullable: false),
-                    password_hash = table.Column<byte[]>(maxLength: 64, nullable: false),
                     address_id = table.Column<int>(nullable: true)
                 },
                 constraints: table =>

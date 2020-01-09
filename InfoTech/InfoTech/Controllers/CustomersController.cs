@@ -56,7 +56,7 @@ namespace InfoTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerId,FirstName,LastName,Phone,Email,PasswordHash,AddressId")] Customer customer)
+        public async Task<IActionResult> Create([Bind("CustomerId,FirstName,LastName,Phone,Email,AddressId")] Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +90,7 @@ namespace InfoTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CustomerId,FirstName,LastName,Phone,Email,PasswordHash,AddressId")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("CustomerId,FirstName,LastName,Phone,Email,AddressId")] Customer customer)
         {
             if (id != customer.CustomerId)
             {

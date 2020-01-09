@@ -89,11 +89,6 @@ namespace InfoTech.Migrations
                         .HasMaxLength(50)
                         .IsUnicode(false);
 
-                    b.Property<byte[]>("PasswordHash")
-                        .IsRequired()
-                        .HasColumnName("password_hash")
-                        .HasMaxLength(64);
-
                     b.Property<string>("Phone")
                         .HasColumnName("phone")
                         .HasMaxLength(15)
@@ -528,8 +523,6 @@ namespace InfoTech.Migrations
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256);
-
-                    b.Property<string>("PasswordHash");
 
                     b.Property<string>("PhoneNumber");
 

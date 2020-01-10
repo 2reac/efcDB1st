@@ -21,10 +21,16 @@ namespace InfoTech.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searching)
         {
-            var iTContext = _context.Product.Include(p => p.Brand).Include(p => p.Category);
-            return View(await iTContext.ToListAsync());
+            if (!String.IsNullOrEmpty(searching))
+            {
+                return View(_context.Product.Where(p => p.ProductName.Contains(searching) || p.Description.Contains(searching)).ToList());
+            }
+            else
+            {
+                return View(_context.Product.Include(p => p.Brand).Include(p => p.Category));
+            }
         }
 
         // GET: Products/Details/5

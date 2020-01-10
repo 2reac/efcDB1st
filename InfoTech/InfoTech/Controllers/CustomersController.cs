@@ -89,11 +89,9 @@ namespace InfoTech.Controllers
         {
             var nameParameter = new System.Data.SqlClient.SqlParameter("@name", name);
 
-            using (var context = new ITContext())
-            {
-                var c = _context.Customer.FromSql("exec [dbo].[customer_by_email] @name", nameParameter).FirstOrDefault();
-                return c;
-            }
+            //var c = _context.Customer.Where(i => i.Email == name).FirstOrDefault<Customer>();
+            var c = _context.Customer.FromSql("exec [dbo].[customer_by_email] @name", nameParameter).FirstOrDefault();
+            return c;
         }
 
         // POST: Customers/Edit/5

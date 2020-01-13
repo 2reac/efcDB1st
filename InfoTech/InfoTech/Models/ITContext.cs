@@ -231,25 +231,28 @@ namespace InfoTech.Models
 
                 entity.Property(e => e.CustomerId).HasColumnName("customer_id");
 
-                entity.Property(e => e.DeliveryAddressId).HasColumnName("delivery_address_id");
+                entity.Property(e => e.DeliveryAddressId).HasColumnName("delivery_address_id").IsRequired(false); ;
 
                 entity.Property(e => e.DiscountCode)
                     .HasColumnName("discount_code")
                     .HasMaxLength(20)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .IsRequired(false);
 
                 entity.Property(e => e.OrderDate)
                     .HasColumnName("order_date")
-                    .HasColumnType("date");
+                    .HasColumnType("date")
+                    .IsRequired(false); ;
 
                 entity.Property(e => e.OrderStatus)
                     .HasColumnName("order_status")
                     .HasMaxLength(10)
-                    .IsUnicode(false);
+                    .IsUnicode(false)
+                    .IsRequired(false);
 
-                entity.Property(e => e.PaymentId).HasColumnName("payment_id");
+                entity.Property(e => e.PaymentId).HasColumnName("payment_id").IsRequired(false);
 
-                entity.Property(e => e.StoreId).HasColumnName("store_id");
+                entity.Property(e => e.StoreId).HasColumnName("store_id").IsRequired(false);
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Order)

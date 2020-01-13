@@ -1,0 +1,32 @@
+﻿@model InfoTech.ViewModels.CartViewModel
+
+<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<li class="btn" style="color: white;">
+    @if (@Model.TotalPrice > 0)
+    {
+    <span style="color: black; font-weight: bold;">
+        Total: 
+    </span>
+        @Model.TotalPrice
+    }
+</li>
+<a href="">
+    <button type="button" class="btn btn-secondary cart">
+        <i class="fa fa-shopping-cart" style="font-size: 20px"></i><span class='badge badge-warning' id='lblCartCount'>@Model.ItemsNo </span>
+    </button>
+</a>
+
+<style>
+    .cart {
+        background: purple;
+    }
+
+    .badge {
+        background: magenta;
+        color: white;
+        padding: 1.5px 5px;
+        vertical-align: top;
+        margin-left: -5px;
+    }
+</style>

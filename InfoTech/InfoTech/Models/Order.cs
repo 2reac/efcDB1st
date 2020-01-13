@@ -13,10 +13,10 @@ namespace InfoTech.Models
         public int OrderId { get; set; }
         public int CustomerId { get; set; }
         public DateTime? OrderDate { get; set; }
-        public int DeliveryAddressId { get; set; }
-        public int StoreId { get; set; }
+        public int? DeliveryAddressId { get; set; }
+        public int? StoreId { get; set; }
         public string DiscountCode { get; set; }
-        public int PaymentId { get; set; }
+        public int? PaymentId { get; set; }
         public string OrderStatus { get; set; }
 
         public virtual Customer Customer { get; set; }

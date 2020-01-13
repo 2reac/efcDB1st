@@ -5,12 +5,16 @@
     <ul class="navbar-nav">
         @if (SignInManager.IsSignedIn(User))
         {
+            @if (User.IsInRole("User"))
+            {
+            @await Component.InvokeAsync("Cart")
+            }
             <li class="nav-item font-weight-bold">
                 <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello, @UserManager.GetUserName(User)!</a>
             </li>
             <li class="nav-item">
                 <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Products", new { area = "" })">
-                    <button id="logout" type="submit" class="nav-link btn btn-link text-dark" style="font-weight: bold">&cross;</button>
+                    <button id="logout" type="submit" class="btn btn-link btn-secondary purple" style="font-weight: bold">&cross;</button>
                 </form>
             </li>
         }
@@ -24,3 +28,16 @@
             </li>
         }
     </ul>
+
+<style>
+    .purple {
+        font-size: 16px;
+        background: purple;
+        color: magenta;
+    }
+    .purple:hover, 
+    .purple:focus {
+        color: magenta;
+        text-decoration: none;
+    }
+</style>

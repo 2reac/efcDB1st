@@ -6,7 +6,18 @@
 }
 
 @*<h1>Index</h1>*@
-<h1>All products</h1>
+<div class="title col row mx-0">
+    <div class="col-6 pl-0">
+        All products
+    </div>
+    <div class="col-6 pr-0" style="padding-left: 3.75rem;">
+    @using (Html.BeginForm("Index", "Products", FormMethod.Get))
+    {
+        @Html.TextBox("searching");
+        <input type="submit" value="Search" />
+    }
+    </div>
+</div>
 
 @if (User.IsInRole("Admin"))
 {
@@ -14,13 +25,6 @@
         <a asp-action="Create">Create New</a>
     </p>
 }
-
-@using (Html.BeginForm("Index", "Products", FormMethod.Get))
-{
-    @Html.TextBox("searching");
-    <input type="submit" value="Search" />
-}
-<br />
 
 <table class="table">
     <thead>
@@ -49,6 +53,10 @@
             @*<th>
                     @Html.DisplayNameFor(model => model.Category)
                 </th>*@
+            @if (User.IsInRole("User"))
+            {
+            <th></th>
+            }
             <th></th>
         </tr>
     </thead>
@@ -83,6 +91,12 @@
                 @*<td>
                         @Html.DisplayFor(modelItem => item.Category.CategoryName)
                     </td>*@
+                @if (User.IsInRole("User"))
+                {
+                <td>
+                    <a href="/Products/AddProduct?Price=@item.ProductPrice&Id=@item.ProductId"><button class="btn btn-outline-info">Add to cart</button></a>
+                </td>
+                }
                 <td>
                     @if (User.IsInRole("Admin"))
                     {
@@ -98,3 +112,17 @@
         }
     </tbody>
 </table>
+
+<style>
+    .table td {
+        vertical-align: baseline;
+    }
+
+    .title {
+        font-size: 2rem;
+        font-weight: 500;
+        line-height: 1.2;
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+    }
+</style>

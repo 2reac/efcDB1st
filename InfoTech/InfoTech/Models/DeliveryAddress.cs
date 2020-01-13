@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 namespace InfoTech.Models
 {
-    public partial class Customer
+    public partial class DeliveryAddress
     {
-        public Customer()
+        public DeliveryAddress()
         {
             Order = new HashSet<Order>();
         }
 
-        public int CustomerId { get; set; }
+        public int DeliveryAddressId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
-        public int? AddressId { get; set; }
+        public int AddressId { get; set; }
 
         public virtual GeneralAddress Address { get; set; }
         public virtual ICollection<Order> Order { get; set; }

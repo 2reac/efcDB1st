@@ -20,16 +20,10 @@ namespace InfoTech.Models
         public virtual DbSet<Brand> Brand { get; set; }
         public virtual DbSet<Category> Category { get; set; }
         public virtual DbSet<Customer> Customer { get; set; }
-        public virtual DbSet<DeliveryAddress> DeliveryAddress { get; set; }
-        public virtual DbSet<Discount> Discount { get; set; }
-        public virtual DbSet<GeneralAddress> GeneralAddress { get; set; }
         public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<OrderProduct> OrderProduct { get; set; }
-        public virtual DbSet<Payment> Payment { get; set; }
         public virtual DbSet<Product> Product { get; set; }
         public virtual DbSet<ProductCategory> ProductCategory { get; set; }
-        public virtual DbSet<Stock> Stock { get; set; }
-        public virtual DbSet<Store> Store { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -82,8 +76,6 @@ namespace InfoTech.Models
 
                 entity.Property(e => e.CustomerId).HasColumnName("customer_id");
 
-                entity.Property(e => e.AddressId).HasColumnName("address_id");
-
                 entity.Property(e => e.Email)
                     .IsRequired()
                     .HasColumnName("email")
@@ -103,114 +95,6 @@ namespace InfoTech.Models
                 entity.Property(e => e.Phone)
                     .HasColumnName("phone")
                     .HasMaxLength(15)
-                    .IsUnicode(false);
-
-                entity.HasOne(d => d.Address)
-                    .WithMany(p => p.Customer)
-                    .HasForeignKey(d => d.AddressId)
-                    .HasConstraintName("FK__customer__addres__68487DD7");
-            });
-
-            modelBuilder.Entity<DeliveryAddress>(entity =>
-            {
-                entity.ToTable("delivery_address");
-
-                entity.Property(e => e.DeliveryAddressId).HasColumnName("delivery_address_id");
-
-                entity.Property(e => e.AddressId).HasColumnName("address_id");
-
-                entity.Property(e => e.Email)
-                    .IsRequired()
-                    .HasColumnName("email")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.FirstName)
-                    .IsRequired()
-                    .HasColumnName("first_name")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.LastName)
-                    .IsRequired()
-                    .HasColumnName("last_name")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Phone)
-                    .HasColumnName("phone")
-                    .HasMaxLength(15)
-                    .IsUnicode(false);
-
-                entity.HasOne(d => d.Address)
-                    .WithMany(p => p.DeliveryAddress)
-                    .HasForeignKey(d => d.AddressId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__delivery___addre__4BAC3F29");
-            });
-
-            modelBuilder.Entity<Discount>(entity =>
-            {
-                entity.HasKey(e => e.DiscountCode)
-                    .HasName("PK__discount__75C1F00773645239");
-
-                entity.ToTable("discount");
-
-                entity.HasIndex(e => e.DiscountId)
-                    .HasName("UQ__discount__BDBE9EF828A6921A")
-                    .IsUnique();
-
-                entity.Property(e => e.DiscountCode)
-                    .HasColumnName("discount_code")
-                    .HasMaxLength(20)
-                    .IsUnicode(false)
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.DiscountId)
-                    .HasColumnName("discount_id")
-                    .ValueGeneratedOnAdd();
-
-                entity.Property(e => e.DiscountPercentage).HasColumnName("discount_percentage");
-            });
-
-            modelBuilder.Entity<GeneralAddress>(entity =>
-            {
-                entity.HasKey(e => e.AddressId)
-                    .HasName("PK__general___CAA247C8FDFC7460");
-
-                entity.ToTable("general_address");
-
-                entity.Property(e => e.AddressId).HasColumnName("address_id");
-
-                entity.Property(e => e.City)
-                    .IsRequired()
-                    .HasColumnName("city")
-                    .HasMaxLength(40)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Country)
-                    .IsRequired()
-                    .HasColumnName("country")
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Number).HasColumnName("number");
-
-                entity.Property(e => e.Region)
-                    .IsRequired()
-                    .HasColumnName("region")
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Street)
-                    .IsRequired()
-                    .HasColumnName("street")
-                    .HasMaxLength(40)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ZipCode)
-                    .HasColumnName("zip_code")
-                    .HasMaxLength(7)
                     .IsUnicode(false);
             });
 
@@ -231,13 +115,6 @@ namespace InfoTech.Models
 
                 entity.Property(e => e.CustomerId).HasColumnName("customer_id");
 
-                entity.Property(e => e.DeliveryAddressId).HasColumnName("delivery_address_id");
-
-                entity.Property(e => e.DiscountCode)
-                    .HasColumnName("discount_code")
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
                 entity.Property(e => e.OrderDate)
                     .HasColumnName("order_date")
                     .HasColumnType("date");
@@ -247,38 +124,11 @@ namespace InfoTech.Models
                     .HasMaxLength(10)
                     .IsUnicode(false);
 
-                entity.Property(e => e.PaymentId).HasColumnName("payment_id");
-
-                entity.Property(e => e.StoreId).HasColumnName("store_id");
-
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Order)
                     .HasForeignKey(d => d.CustomerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__order__customer___6C190EBB");
-
-                entity.HasOne(d => d.DeliveryAddress)
-                    .WithMany(p => p.Order)
-                    .HasForeignKey(d => d.DeliveryAddressId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__order__delivery___6D0D32F4");
-
-                entity.HasOne(d => d.DiscountCodeNavigation)
-                    .WithMany(p => p.Order)
-                    .HasForeignKey(d => d.DiscountCode)
-                    .HasConstraintName("FK__order__discount___6EF57B66");
-
-                entity.HasOne(d => d.Payment)
-                    .WithMany(p => p.Order)
-                    .HasForeignKey(d => d.PaymentId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__order__payment_i__6FE99F9F");
-
-                entity.HasOne(d => d.Store)
-                    .WithMany(p => p.Order)
-                    .HasForeignKey(d => d.StoreId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__order__store_id__6E01572D");
             });
 
             modelBuilder.Entity<OrderProduct>(entity =>
@@ -310,23 +160,6 @@ namespace InfoTech.Models
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__order_pro__produ__74AE54BC");
-            });
-
-            modelBuilder.Entity<Payment>(entity =>
-            {
-                entity.ToTable("payment");
-
-                entity.Property(e => e.PaymentId).HasColumnName("payment_id");
-
-                entity.Property(e => e.PaymentType)
-                    .HasColumnName("payment_type")
-                    .HasMaxLength(4)
-                    .IsUnicode(false)
-                    .HasDefaultValueSql("('Card')");
-
-                entity.Property(e => e.PaymentValue)
-                    .HasColumnName("payment_value")
-                    .HasColumnType("numeric(12, 2)");
             });
 
             modelBuilder.Entity<Product>(entity =>
@@ -401,85 +234,6 @@ namespace InfoTech.Models
                     .HasForeignKey(d => d.ProductId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__product_c__produ__6477ECF3");
-            });
-
-            modelBuilder.Entity<Stock>(entity =>
-            {
-                entity.HasKey(e => new { e.ProductId, e.StoreId })
-                    .HasName("PK__stock__9D2D57C5EAA0285C");
-
-                entity.ToTable("stock");
-
-                entity.Property(e => e.ProductId).HasColumnName("product_id");
-
-                entity.Property(e => e.StoreId).HasColumnName("store_id");
-
-                entity.Property(e => e.Quantity).HasColumnName("quantity");
-
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.Stock)
-                    .HasForeignKey(d => d.ProductId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__stock__product_i__60A75C0F");
-
-                entity.HasOne(d => d.Store)
-                    .WithMany(p => p.Stock)
-                    .HasForeignKey(d => d.StoreId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__stock__store_id__619B8048");
-            });
-
-            modelBuilder.Entity<Store>(entity =>
-            {
-                entity.ToTable("store");
-
-                entity.Property(e => e.StoreId).HasColumnName("store_id");
-
-                entity.Property(e => e.City)
-                    .IsRequired()
-                    .HasColumnName("city")
-                    .HasMaxLength(40)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Country)
-                    .IsRequired()
-                    .HasColumnName("country")
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Email)
-                    .IsRequired()
-                    .HasColumnName("email")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Phone)
-                    .HasColumnName("phone")
-                    .HasMaxLength(15)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Region)
-                    .IsRequired()
-                    .HasColumnName("region")
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.StoreName)
-                    .IsRequired()
-                    .HasColumnName("store_name")
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Street)
-                    .IsRequired()
-                    .HasColumnName("street")
-                    .HasMaxLength(40)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ZipCode)
-                    .HasColumnName("zip_code")
-                    .HasMaxLength(7)
-                    .IsUnicode(false);
             });
         }
     }

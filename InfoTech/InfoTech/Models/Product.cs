@@ -9,7 +9,6 @@ namespace InfoTech.Models
         {
             OrderProduct = new HashSet<OrderProduct>();
             ProductCategory = new HashSet<ProductCategory>();
-            Stock = new HashSet<Stock>();
         }
 
         public int ProductId { get; set; }
@@ -19,14 +18,11 @@ namespace InfoTech.Models
         public decimal? ProductPrice { get; set; }
         public string ProductImage { get; set; }
         public string Origin { get; set; }
-        public bool? InStock { get; set; }
         public int CategoryId { get; set; }
-        public int ProductDiscountPercent { get; set; }
 
         public virtual Brand Brand { get; set; }
         public virtual Category Category { get; set; }
         public virtual ICollection<OrderProduct> OrderProduct { get; set; }
         public virtual ICollection<ProductCategory> ProductCategory { get; set; }
-        public virtual ICollection<Stock> Stock { get; set; }
     }
 }

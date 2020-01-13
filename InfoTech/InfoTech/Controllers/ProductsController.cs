@@ -25,7 +25,7 @@ namespace InfoTech.Controllers
         {
             if (!String.IsNullOrEmpty(searching))
             {
-                return View(_context.Product.Where(p => p.ProductName.Contains(searching) || p.Description.Contains(searching)).ToList());
+                return View(_context.Product.Include(p => p.Brand).Include(p => p.Category).Where(p => p.ProductName.Contains(searching) || p.Description.Contains(searching)).ToList());
             }
             else
             {

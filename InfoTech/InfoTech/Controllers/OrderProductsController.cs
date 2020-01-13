@@ -58,7 +58,7 @@ namespace InfoTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OrderId,ProductId,Quantity,Price")] OrderProduct orderProduct)
+        public async Task<IActionResult> Create([Bind("OrderId,ProductId,Quantity")] OrderProduct orderProduct)
         {
             if (ModelState.IsValid)
             {
@@ -94,7 +94,7 @@ namespace InfoTech.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OrderId,ProductId,Quantity,Price")] OrderProduct orderProduct)
+        public async Task<IActionResult> Edit(int id, [Bind("OrderId,ProductId,Quantity")] OrderProduct orderProduct)
         {
             if (id != orderProduct.OrderId)
             {

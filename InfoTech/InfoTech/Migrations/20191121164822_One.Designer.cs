@@ -272,10 +272,6 @@ namespace InfoTech.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnName("product_id");
 
-                    b.Property<decimal?>("Price")
-                        .HasColumnName("price")
-                        .HasColumnType("numeric(9, 2)");
-
                     b.Property<int>("Quantity")
                         .HasColumnName("quantity");
 
@@ -523,6 +519,8 @@ namespace InfoTech.Migrations
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256);
+
+                    b.Property<string>("PasswordHash");
 
                     b.Property<string>("PhoneNumber");
 

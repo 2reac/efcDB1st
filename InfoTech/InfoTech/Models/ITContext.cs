@@ -292,10 +292,6 @@ namespace InfoTech.Models
 
                 entity.Property(e => e.ProductId).HasColumnName("product_id");
 
-                entity.Property(e => e.Price)
-                    .HasColumnName("price")
-                    .HasColumnType("numeric(9, 2)");
-
                 entity.Property(e => e.Quantity).HasColumnName("quantity");
 
                 entity.HasOne(d => d.Order)

@@ -11,7 +11,7 @@
         @Model.TotalPrice
     }
 </li>
-<a href="/Cart/MyCart">
+<a asp-controller="Cart" asp-action="MyCart">
     <button type="button" class="btn btn-secondary cart">
         <i class="fa fa-shopping-cart" style="font-size: 20px"></i><span class='badge badge-warning' id='lblCartCount'>@Model.ItemsNo </span>
     </button>

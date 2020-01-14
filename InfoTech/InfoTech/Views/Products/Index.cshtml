@@ -6,11 +6,11 @@
 }
 
 @*<h1>Index</h1>*@
-<div class="title col row mx-0">
+<div class="title col row mx-0 pr-0">
     <div class="col-6 pl-0">
         All products
     </div>
-    <div class="col-6 pr-0" style="padding-left: 3.75rem;">
+    <div class="col-6 pr-0 d-flex justify-content-end">
     @using (Html.BeginForm("Index", "Products", FormMethod.Get))
     {
         @Html.TextBox("searching");
@@ -94,7 +94,7 @@
                 @if (User.IsInRole("User"))
                 {
                 <td>
-                    <a href="/Cart/AddProduct?Id=@item.ProductId"><button class="btn btn-outline-info">Add to cart</button></a>
+                    <a asp-controller="Cart" asp-action="AddProduct" asp-route-id="@item.ProductId"><button class="btn btn-outline-info">Add to cart</button></a>
                 </td>
                 }
             <td>
@@ -121,7 +121,7 @@
     }
 
     .title {
-        font-size: 2rem;
+        font-size: 1.75rem;
         font-weight: 500;
         margin-top: 0;
         margin-bottom: 0.5rem;

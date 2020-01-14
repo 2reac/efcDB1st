@@ -24,10 +24,10 @@ namespace InfoTech.Controllers
             return View(await _context.Product.ToListAsync());
         }
 
-        public IActionResult MyCart()
+        public async Task<IActionResult> MyCart()
         {
-            var customer = _context.Customer.Where(e => e.Email.Equals(User.Identity.Name)).Select(e => e.CustomerId).First();
-            var ordering = _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Cart")).FirstOrDefault();
+            var customer = await _context.Customer.Where(e => e.Email.Equals(User.Identity.Name)).Select(e => e.CustomerId).FirstAsync();
+            var ordering = await _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Cart")).FirstOrDefaultAsync();
 
             List<CartProductViewModel> myProducts = new List<CartProductViewModel>();
             if (ordering != null)
@@ -36,7 +36,7 @@ namespace InfoTech.Controllers
 
                 foreach (OrderProduct product in products)
                 {
-                    var prod = _context.Product.Where(p => p.ProductId.Equals(product.ProductId)).First();
+                    var prod = await _context.Product.Where(p => p.ProductId.Equals(product.ProductId)).FirstAsync();
                     CartProductViewModel myProduct = new CartProductViewModel();
                     myProduct.Id = prod.ProductId;
                     myProduct.Name = prod.ProductName;
@@ -49,14 +49,14 @@ namespace InfoTech.Controllers
             return View(myProducts);
         }
 
-        public IActionResult AddProduct(int Id)
+        public async Task<IActionResult> AddProduct(int id)
         {
-            var customer = _context.Customer.Where(e => e.Email.Equals(User.Identity.Name)).Select(e => e.CustomerId).First();
-            var ordering = _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Cart")).FirstOrDefault();
+            var customer = await _context.Customer.Where(e => e.Email.Equals(User.Identity.Name)).Select(e => e.CustomerId).FirstAsync();
+            var ordering = await _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Cart")).FirstOrDefaultAsync();
 
             if (ordering != null)
             {
-                var product = _context.OrderProduct.Where(i => i.ProductId.Equals(Id) && i.OrderId.Equals(ordering.OrderId)).FirstOrDefault();
+                var product = await _context.OrderProduct.Where(i => i.ProductId.Equals(id) && i.OrderId.Equals(ordering.OrderId)).FirstOrDefaultAsync();
 
                 if (product != null)
                 {
@@ -67,11 +67,11 @@ namespace InfoTech.Controllers
                     //object initialization
                     OrderProduct order_product = new OrderProduct();
                     order_product.OrderId = ordering.OrderId;
-                    order_product.ProductId = Id;
+                    order_product.ProductId = id;
                     order_product.Quantity = 1;
                     _context.OrderProduct.Add(order_product);
                 }
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
             else
             {
@@ -84,42 +84,42 @@ namespace InfoTech.Controllers
                 _context.Order.Add(order);
                 _context.SaveChanges();
 
-                var order_id = _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Cart")).Select(e => e.OrderId).First();
+                var order_id = await _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Cart")).Select(e => e.OrderId).FirstAsync();
 
                 OrderProduct order_product = new OrderProduct();
                 order_product.OrderId = order_id;
-                order_product.ProductId = Id;
+                order_product.ProductId = id;
                 order_product.Quantity = 1;
                 _context.OrderProduct.Add(order_product);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
 
             return RedirectToAction("Index", "Products");
         }
 
-        public IActionResult RemoveProduct(int Id)
+        public async Task<IActionResult> RemoveProduct(int id)
         {
-            var customer = _context.Customer.Where(e => e.Email.Equals(User.Identity.Name)).Select(e => e.CustomerId).First();
-            var ordering = _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Cart")).FirstOrDefault();
+            var customer = await _context.Customer.Where(e => e.Email.Equals(User.Identity.Name)).Select(e => e.CustomerId).FirstAsync();
+            var ordering = await _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Cart")).FirstOrDefaultAsync();
 
             if (ordering != null)
             {
-                var product = _context.OrderProduct.Where(i => i.ProductId.Equals(Id) && i.OrderId.Equals(ordering.OrderId)).FirstOrDefault();
+                var product = await _context.OrderProduct.Where(i => i.ProductId.Equals(id) && i.OrderId.Equals(ordering.OrderId)).FirstOrDefaultAsync();
                 _context.OrderProduct.Remove(product);
-                _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
             }
 
             return RedirectToAction("MyCart", "Cart");
         }
 
-        public IActionResult AddToCart(int Id)
+        public async Task<IActionResult> AddToCart(int id)
         {
-            var customer = _context.Customer.Where(e => e.Email.Equals(User.Identity.Name)).Select(e => e.CustomerId).First();
-            var ordering = _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Cart")).FirstOrDefault();
+            var customer = await _context.Customer.Where(e => e.Email.Equals(User.Identity.Name)).Select(e => e.CustomerId).FirstAsync();
+            var ordering = await _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Cart")).FirstOrDefaultAsync();
 
             if (ordering != null)
             {
-                var product = _context.OrderProduct.Where(i => i.ProductId.Equals(Id) && i.OrderId.Equals(ordering.OrderId)).FirstOrDefault();
+                var product = await _context.OrderProduct.Where(i => i.ProductId.Equals(id) && i.OrderId.Equals(ordering.OrderId)).FirstOrDefaultAsync();
 
                 if (product != null)
                 {
@@ -130,24 +130,24 @@ namespace InfoTech.Controllers
                     //think this is not needed
                     OrderProduct order_product = new OrderProduct();
                     order_product.OrderId = ordering.OrderId;
-                    order_product.ProductId = Id;
+                    order_product.ProductId = id;
                     order_product.Quantity = 1;
                     _context.OrderProduct.Add(order_product);
                 }
-                _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
             }
 
             return RedirectToAction("MyCart", "Cart");
         }
 
-        public IActionResult RemoveFromCart(int Id)
+        public async Task<IActionResult> RemoveFromCart(int id)
         {
-            var customer = _context.Customer.Where(e => e.Email.Equals(User.Identity.Name)).Select(e => e.CustomerId).First();
-            var ordering = _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Cart")).FirstOrDefault();
+            var customer = await _context.Customer.Where(e => e.Email.Equals(User.Identity.Name)).Select(e => e.CustomerId).FirstAsync();
+            var ordering = await _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Cart")).FirstOrDefaultAsync();
 
             if (ordering != null)
             {
-                var product = _context.OrderProduct.Where(i => i.ProductId.Equals(Id) && i.OrderId.Equals(ordering.OrderId)).FirstOrDefault();
+                var product = await _context.OrderProduct.Where(i => i.ProductId.Equals(id) && i.OrderId.Equals(ordering.OrderId)).FirstOrDefaultAsync();
 
                 if (product != null)
                 {
@@ -160,22 +160,22 @@ namespace InfoTech.Controllers
                         product.Quantity--;
                     }
                 }
-                _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
             }
 
             return RedirectToAction("MyCart", "Cart");
         }
 
-        public IActionResult FinishOrder()
+        public async Task<IActionResult> FinishOrder()
         {
-            var customer = _context.Customer.Where(e => e.Email.Equals(User.Identity.Name)).Select(e => e.CustomerId).First();
-            var ordering = _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Cart")).FirstOrDefault();
+            var customer = await _context.Customer.Where(e => e.Email.Equals(User.Identity.Name)).Select(e => e.CustomerId).FirstAsync();
+            var ordering = await _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Cart")).FirstOrDefaultAsync();
 
             if (ordering != null)
             {
                 ordering.OrderStatus = "Placed";
                 _context.Update(ordering);
-                _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
             }
             return RedirectToAction("Index", "Products");
         }

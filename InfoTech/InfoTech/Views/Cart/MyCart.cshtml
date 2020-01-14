@@ -9,7 +9,10 @@
         Your Cart
     </div>
     <div class="col-6 pr-0 d-flex justify-content-end">
-        <a href="/Cart/FinishOrder"><button class="btn btn-outline-info">Finish Order</button></a>
+        @using (Html.BeginForm("FinishOrder", "Cart"))
+        {
+            <input type="submit" value="Finish Order" class="btn btn-outline-info" />
+        }
     </div>
 </div>
 
@@ -50,12 +53,12 @@
                     @Html.DisplayFor(modelItem => item.Quantity)
                 </td>
                 <td class="text-white">
-                    <a href="/Cart/AddToCart?Id=@item.Id"><button class="btn btn-secondary btn-plus">+</button></a>
-                    <a href="/Cart/RemoveFromCart?Id=@item.Id"><button class="btn btn-secondary btn-minus">-</button></a>
-                    <a href="/Cart/RemoveProduct?Id=@item.Id"><button class="btn btn-info"><i class="fa fa-trash"></i></button></a>
+                    <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.Id"><button class="btn btn-secondary btn-plus">+</button></a>
+                    <a asp-controller="Cart" asp-action="RemoveFromCart" asp-route-id="@item.Id"><button class="btn btn-secondary btn-minus">-</button></a>
+                    <a asp-controller="Cart" asp-action="RemoveProduct" asp-route-id="@item.Id"><button class="btn btn-info"><i class="fa fa-trash"></i></button></a>
                 </td>
                 <td>
-                    <a href="/Products/Details?id=@item.Id">Details</a>
+                    <a asp-controller="Products" asp-action="Details" asp-route-id="@item.Id">Details</a>
                 </td>
 
             </tr>
@@ -70,7 +73,7 @@
 
     .title {
         color: purple;
-        font-size: 2rem;
+        font-size: 1.75rem;
         font-weight: 500;
         line-height: 1.675;
         margin-top: 0;

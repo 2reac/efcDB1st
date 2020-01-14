@@ -1,6 +1,7 @@
 ﻿using InfoTech.Models;
 using InfoTech.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,19 +21,19 @@ namespace InfoTech.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var customer = _context.Customer.Where(e => e.Email.Equals(User.Identity.Name)).Select(e => e.CustomerId).First();
-            var ordering = _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Cart")).FirstOrDefault();
+            var customer = await _context.Customer.Where(e => e.Email.Equals(User.Identity.Name)).Select(e => e.CustomerId).FirstAsync();
+            var ordering = await _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Cart")).FirstOrDefaultAsync();
 
             model.ItemsNo = 0;
             model.TotalPrice = 0;
             if(ordering != null) {
 
-                var products = _context.OrderProduct.Where(o => o.OrderId.Equals(ordering.OrderId)).ToList();
+                var products = await _context.OrderProduct.Where(o => o.OrderId.Equals(ordering.OrderId)).ToListAsync();
 
                 foreach (OrderProduct product in products)
                 {
                     model.ItemsNo += product.Quantity;
-                    var price = _context.Product.Where(p => p.ProductId.Equals(product.ProductId)).Select(p => p.ProductPrice).First();
+                    var price = await _context.Product.Where(p => p.ProductId.Equals(product.ProductId)).Select(p => p.ProductPrice).FirstAsync();
                     model.TotalPrice += product.Quantity * (decimal)price;
                 }
             }

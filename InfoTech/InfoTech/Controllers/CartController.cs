@@ -151,7 +151,7 @@ namespace InfoTech.Controllers
 
                 if (product != null)
                 {
-                    if(product.Quantity == 1)
+                    if (product.Quantity == 1)
                     {
                         _context.OrderProduct.Remove(product);
                     }
@@ -164,6 +164,20 @@ namespace InfoTech.Controllers
             }
 
             return RedirectToAction("MyCart", "Cart");
+        }
+
+        public IActionResult FinishOrder()
+        {
+            var customer = _context.Customer.Where(e => e.Email.Equals(User.Identity.Name)).Select(e => e.CustomerId).First();
+            var ordering = _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Cart")).FirstOrDefault();
+
+            if (ordering != null)
+            {
+                ordering.OrderStatus = "Placed";
+                _context.Update(ordering);
+                _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Index", "Products");
         }
     }
 }

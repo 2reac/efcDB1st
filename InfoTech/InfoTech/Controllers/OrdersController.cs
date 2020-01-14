@@ -21,8 +21,23 @@ namespace InfoTech.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            var iTContext = _context.Order.Include(o => o.Customer).Include(o => o.DeliveryAddress).Include(o => o.DiscountCodeNavigation).Include(o => o.Payment).Include(o => o.Store);
-            return View(await iTContext.ToListAsync());
+            if (User.IsInRole("User"))
+            {
+                var customer = _context.Customer.Where(e => e.Email.Equals(User.Identity.Name)).Select(e => e.CustomerId).First();
+                var ordering = _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Placed"));
+
+                var iTContext = ordering.Include(o => o.Customer).Include(o => o.DeliveryAddress).Include(o => o.DiscountCodeNavigation).Include(o => o.Payment).Include(o => o.Store);
+                return View(await iTContext.ToListAsync());
+            }
+            else if (User.IsInRole("Admin"))
+            {
+                var iTContext = _context.Order.Include(o => o.Customer).Include(o => o.DeliveryAddress).Include(o => o.DiscountCodeNavigation).Include(o => o.Payment).Include(o => o.Store);
+                return View(await iTContext.ToListAsync());
+            }
+            else
+            {
+                return null;
+            }
         }
 
         // GET: Orders/Details/5

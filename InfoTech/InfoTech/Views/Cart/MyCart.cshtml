@@ -4,7 +4,14 @@
     ViewData["Title"] = "MyCart";
 }
 
-<div class="title">Your Cart</div>
+<div class="title col row mx-0 pr-0">
+    <div class="col-6 pl-0">
+        Your Cart
+    </div>
+    <div class="col-6 pr-0 d-flex justify-content-end">
+        <a href="/Cart/FinishOrder"><button class="btn btn-outline-info">Finish Order</button></a>
+    </div>
+</div>
 
 <table class="table">
     <thead>

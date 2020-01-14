@@ -24,7 +24,7 @@ namespace InfoTech.Controllers
             return View(await _context.Product.ToListAsync());
         }
 
-        public async Task<IActionResult> MyCart()
+        public IActionResult MyCart()
         {
             var customer = _context.Customer.Where(e => e.Email.Equals(User.Identity.Name)).Select(e => e.CustomerId).First();
             var ordering = _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Cart")).FirstOrDefault();
@@ -48,7 +48,8 @@ namespace InfoTech.Controllers
             }
             return View(myProducts);
         }
-        public async Task<IActionResult> AddProduct(decimal Price, int Id)
+
+        public IActionResult AddProduct(int Id)
         {
             var customer = _context.Customer.Where(e => e.Email.Equals(User.Identity.Name)).Select(e => e.CustomerId).First();
             var ordering = _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Cart")).FirstOrDefault();
@@ -63,6 +64,7 @@ namespace InfoTech.Controllers
                 }
                 else
                 {
+                    //object initialization
                     OrderProduct order_product = new OrderProduct();
                     order_product.OrderId = ordering.OrderId;
                     order_product.ProductId = Id;
@@ -73,9 +75,12 @@ namespace InfoTech.Controllers
             }
             else
             {
-                Order order = new Order();
-                order.OrderStatus = "Cart";
-                order.CustomerId = customer;
+                //object initialization simplified
+                Order order = new Order
+                {
+                    OrderStatus = "Cart",
+                    CustomerId = customer
+                };
                 _context.Order.Add(order);
                 _context.SaveChanges();
 
@@ -89,7 +94,76 @@ namespace InfoTech.Controllers
                 _context.SaveChanges();
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Products");
+        }
+
+        public IActionResult RemoveProduct(int Id)
+        {
+            var customer = _context.Customer.Where(e => e.Email.Equals(User.Identity.Name)).Select(e => e.CustomerId).First();
+            var ordering = _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Cart")).FirstOrDefault();
+
+            if (ordering != null)
+            {
+                var product = _context.OrderProduct.Where(i => i.ProductId.Equals(Id) && i.OrderId.Equals(ordering.OrderId)).FirstOrDefault();
+                _context.OrderProduct.Remove(product);
+                _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("MyCart", "Cart");
+        }
+
+        public IActionResult AddToCart(int Id)
+        {
+            var customer = _context.Customer.Where(e => e.Email.Equals(User.Identity.Name)).Select(e => e.CustomerId).First();
+            var ordering = _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Cart")).FirstOrDefault();
+
+            if (ordering != null)
+            {
+                var product = _context.OrderProduct.Where(i => i.ProductId.Equals(Id) && i.OrderId.Equals(ordering.OrderId)).FirstOrDefault();
+
+                if (product != null)
+                {
+                    product.Quantity++;
+                }
+                else
+                {
+                    //think this is not needed
+                    OrderProduct order_product = new OrderProduct();
+                    order_product.OrderId = ordering.OrderId;
+                    order_product.ProductId = Id;
+                    order_product.Quantity = 1;
+                    _context.OrderProduct.Add(order_product);
+                }
+                _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("MyCart", "Cart");
+        }
+
+        public IActionResult RemoveFromCart(int Id)
+        {
+            var customer = _context.Customer.Where(e => e.Email.Equals(User.Identity.Name)).Select(e => e.CustomerId).First();
+            var ordering = _context.Order.Where(i => i.CustomerId.Equals(customer) && i.OrderStatus.Equals("Cart")).FirstOrDefault();
+
+            if (ordering != null)
+            {
+                var product = _context.OrderProduct.Where(i => i.ProductId.Equals(Id) && i.OrderId.Equals(ordering.OrderId)).FirstOrDefault();
+
+                if (product != null)
+                {
+                    if(product.Quantity == 1)
+                    {
+                        _context.OrderProduct.Remove(product);
+                    }
+                    else
+                    {
+                        product.Quantity--;
+                    }
+                }
+                _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("MyCart", "Cart");
         }
     }
 }

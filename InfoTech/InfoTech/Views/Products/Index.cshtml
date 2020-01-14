@@ -94,7 +94,7 @@
                 @if (User.IsInRole("User"))
                 {
                 <td>
-                    <a href="/Cart/AddProduct?Price=@item.ProductPrice&Id=@item.ProductId"><button class="btn btn-outline-info">Add to cart</button></a>
+                    <a href="/Cart/AddProduct?Id=@item.ProductId"><button class="btn btn-outline-info">Add to cart</button></a>
                 </td>
                 }
             <td>

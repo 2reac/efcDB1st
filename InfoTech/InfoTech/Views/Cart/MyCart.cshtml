@@ -43,9 +43,9 @@
                     @Html.DisplayFor(modelItem => item.Quantity)
                 </td>
                 <td class="text-white">
-                    <a href="/Cart/AddToCart?Price=@item.Price&Id=@item.Id"><button class="btn btn-secondary btn-plus">+</button></a>
-                    <a href="/Cart/RemoveFromCart?Price=@item.Price&Id=@item.Id"><button class="btn btn-secondary btn-minus">-</button></a>
-                    <a href="/Cart/RemoveProduct?Price=@item.Price&Id=@item.Id"><button class="btn btn-info"><i class="fa fa-trash"></i></button></a>
+                    <a href="/Cart/AddToCart?Id=@item.Id"><button class="btn btn-secondary btn-plus">+</button></a>
+                    <a href="/Cart/RemoveFromCart?Id=@item.Id"><button class="btn btn-secondary btn-minus">-</button></a>
+                    <a href="/Cart/RemoveProduct?Id=@item.Id"><button class="btn btn-info"><i class="fa fa-trash"></i></button></a>
                 </td>
                 <td>
                     <a href="/Products/Details?id=@item.Id">Details</a>

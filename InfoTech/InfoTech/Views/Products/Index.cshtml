@@ -94,20 +94,22 @@
                 @if (User.IsInRole("User"))
                 {
                 <td>
-                    <a href="/Products/AddProduct?Price=@item.ProductPrice&Id=@item.ProductId"><button class="btn btn-outline-info">Add to cart</button></a>
+                    <a href="/Cart/AddProduct?Price=@item.ProductPrice&Id=@item.ProductId"><button class="btn btn-outline-info">Add to cart</button></a>
                 </td>
                 }
-                <td>
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a>
-                    }
-                    | <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
-                    }
-                </td>
+            <td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a>
+                    <span>|</span>
+                }
+                <a asp-action="Details" asp-route-id="@item.ProductId">Details</a>
+                @if (User.IsInRole("Admin"))
+                {
+                    <span>|</span>
+                    <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+                }
+            </td>
             </tr>
         }
     </tbody>
@@ -121,7 +123,6 @@
     .title {
         font-size: 2rem;
         font-weight: 500;
-        line-height: 1.2;
         margin-top: 0;
         margin-bottom: 0.5rem;
     }

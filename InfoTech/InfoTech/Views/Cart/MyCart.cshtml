@@ -1,0 +1,88 @@
+﻿@model IEnumerable<InfoTech.ViewModels.CartProductViewModel>
+
+@{
+    ViewData["Title"] = "MyCart";
+}
+
+<div class="title">Your Cart</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th><th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @{
+                        var imgSrc = String.Format("data:image;base64,{0}", item.Image);
+                    }
+                    <img src="@imgSrc" width="50" height=auto />
+                </td><td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td class="text-white">
+                    <a href="/Cart/AddToCart?Price=@item.Price&Id=@item.Id"><button class="btn btn-secondary btn-plus">+</button></a>
+                    <a href="/Cart/RemoveFromCart?Price=@item.Price&Id=@item.Id"><button class="btn btn-secondary btn-minus">-</button></a>
+                    <a href="/Cart/RemoveProduct?Price=@item.Price&Id=@item.Id"><button class="btn btn-info"><i class="fa fa-trash"></i></button></a>
+                </td>
+                <td>
+                    <a href="/Products/Details?id=@item.Id">Details</a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    .table td {
+        vertical-align: baseline;
+    }
+
+    .title {
+        color: purple;
+        font-size: 2rem;
+        font-weight: 500;
+        line-height: 1.675;
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    .btn-plus {
+        background-color: purple;
+    }
+    .btn-plus:hover,
+    .btn-plus:focus {
+        background-color: green;
+    }
+    
+    .btn-minus {
+        background-color: magenta;
+    }
+    .btn-minus:hover,
+    .btn-minus:focus {
+        background-color: red;
+    }
+</style>

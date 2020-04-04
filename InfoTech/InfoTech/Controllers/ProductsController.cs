@@ -21,11 +21,21 @@ namespace InfoTech.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index(string searching)
+        public async Task<IActionResult> Index()
         {
+            ViewBag.Categories = _context.Category.Select(c => new SelectListItem { Value = c.CategoryId.ToString(), Text = c.CategoryName });
+            var iTContext = _context.Product.Include(p => p.Brand).Include(p => p.Category);
+            return View(await iTContext.ToListAsync());
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(string searching, int Category)
+        {
+            ViewBag.Categories = _context.Category.Select(c => new SelectListItem { Value = c.CategoryId.ToString(), Text = c.CategoryName });
             if (!String.IsNullOrEmpty(searching))
             {
-                return View(_context.Product.Include(p => p.Brand).Include(p => p.Category).Where(p => p.ProductName.Contains(searching) || p.Description.Contains(searching)).ToList());
+                var products = _context.Product.Include(p => p.Brand).Include(p => p.Category).Where(p => p.ProductName.Contains(searching) || p.Description.Contains(searching));
+                return (Category == 0) ? View(products.ToList()) : View(products.Where(p => p.CategoryId == Category).ToList());
             }
             else
             {

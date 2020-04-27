@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using InfoTech.Models;
 using Microsoft.AspNetCore.Http;
+using System.Web;
 using System.IO;
 
 namespace InfoTech.Controllers
@@ -41,6 +42,12 @@ namespace InfoTech.Controllers
             {
                 return View(_context.Product.Include(p => p.Brand).Include(p => p.Category));
             }
+        }
+
+        public JsonResult GetProducts(string term)
+        {
+            List<string> products = _context.Product.Where(p => p.ProductName.StartsWith(term)).Select(y => y.ProductName).ToList();
+            return Json(products);
         }
 
         // GET: Products/Details/5

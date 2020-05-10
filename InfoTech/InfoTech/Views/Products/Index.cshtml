@@ -1,38 +1,9 @@
 ﻿@model IEnumerable<InfoTech.Models.Product>
 
-
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<script src="~/lib/jquery/dist/jquery.js"></script>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"</script>
-<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-
-
-<script type="text/javascript">
-    $(function () {
-        $("#txtSearch").autocomplete({
-            source: function (request, response) {
-            $.ajax({
-                url: '@Url.Action("GetProducts", "Products")',
-                dataType: "json",
-                data: { search: $("#txtSearch").val() },
-                success: function (data) {
-                    response($map.data(function (item) {
-                        return { label: item.Name, value: item.Value };
-                    }))
-                },
-                message: {
-                    noResults: "", results
-                }
-            });
-        }
-        });
-    });
-</script>
 
 @*<h1>Index</h1>*@
 @using (Html.BeginForm("Index", "Products"))
@@ -45,7 +16,7 @@
             @Html.DropDownList("Category", new SelectList(ViewBag.Categories, "Value", "Text"), "All categories")
         </div>
         <div class="col-5 d-flex justify-content-end">
-            @Html.TextBox("searching", "search name/description", new { id = "txtSearch" })
+            @Html.TextBox("searching", "search name/description")
         </div>
         <div class="col-2 d-flex justify-content-end">
             <input type="submit" value="Search" />

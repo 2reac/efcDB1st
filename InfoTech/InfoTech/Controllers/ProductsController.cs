@@ -39,7 +39,8 @@ namespace InfoTech.Controllers
             }
             else
             {
-                return View(_context.Product.Include(p => p.Brand).Include(p => p.Category));
+                var products = _context.Product.Include(p => p.Brand).Include(p => p.Category);
+                return (Category == 0) ? View(products.ToList()) : View(products.Where(p => p.CategoryId == Category).ToList());
             }
         }
 
